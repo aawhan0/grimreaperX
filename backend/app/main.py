@@ -108,4 +108,4 @@ async def ingest_usage(event: UsageEvent, request: Request):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("backend.app.main:app", host=HOST, port=int(os.getenv("PORT", "8000")), reload=True)
+    uvicorn.run(app, host=HOST, port=int(os.getenv("PORT", "8000")), reload=True)
