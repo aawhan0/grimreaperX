@@ -1,5 +1,5 @@
 import os
-from datetime import datetime, timezone
+from datetime import datetime
 from threading import Lock
 from time import monotonic
 from uuid import UUID
@@ -82,8 +82,8 @@ def check_rate_limit(identity: str) -> tuple[bool, int]:
 
 @app.middleware("http")
 async def request_size_limit(request: Request, call_next):
-    content_length = request.headers.get("content-length")
-    if content_length is not None and int(content_length) > MAX_REQUEST_BYTES:
+    body = await request.body()
+    if len(body) > MAX_REQUEST_BYTES:
         return JSONResponse(status_code=413, content={"detail": "request body too large"})
     return await call_next(request)
 
