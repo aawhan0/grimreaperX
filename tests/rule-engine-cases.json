@@ -1,0 +1,8 @@
+[
+  {"duration": 19, "threshold": 20, "expected": "normal"},
+  {"duration": 20, "threshold": 20, "expected": "mild"},
+  {"duration": 24, "threshold": 20, "expected": "mild"},
+  {"duration": 25, "threshold": 20, "expected": "serious"},
+  {"duration": 49, "threshold": 20, "expected": "serious"},
+  {"duration": 50, "threshold": 20, "expected": "unhinged"}
+]

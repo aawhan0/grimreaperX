@@ -1,0 +1,378 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>grimreaperX</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #111827;
+        --panel: #1f2937;
+        --panel-strong: #0f172a;
+        --border: rgba(148, 163, 184, 0.2);
+        --accent: #f87171;
+        --accent-soft: rgba(248, 113, 113, 0.12);
+        --ok: #34d399;
+        --text: #e5e7eb;
+        --muted: #9ca3af;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: radial-gradient(circle at top, #1f2937 0%, var(--bg) 52%);
+        color: var(--text);
+        font-family: "Segoe UI", sans-serif;
+      }
+
+      .app-shell {
+        max-width: 960px;
+        margin: 32px auto;
+        padding: 24px;
+      }
+
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+      }
+
+      .brand-mark {
+        width: 28px;
+        height: 28px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        background: var(--accent-soft);
+        color: var(--accent);
+      }
+
+      .status-pill {
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 7px 12px;
+        font-size: 12px;
+        color: var(--ok);
+        background: rgba(52, 211, 153, 0.08);
+      }
+
+      .status-pill[data-state="paused"] {
+        color: var(--accent);
+        background: var(--accent-soft);
+      }
+
+      .topbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 18px;
+      }
+
+      .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+
+      .summary-card {
+        min-width: 0;
+        min-height: 112px;
+        padding: 14px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: rgba(15, 23, 42, 0.72);
+      }
+
+      .summary-card .label {
+        margin-bottom: 12px;
+      }
+
+      .summary-value {
+        display: block;
+        font-size: 22px;
+        font-weight: 700;
+        overflow-wrap: anywhere;
+      }
+
+      .top-apps {
+        display: grid;
+        gap: 6px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        font-size: 13px;
+      }
+
+      .top-apps li {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+      }
+
+      .top-apps li span:last-child {
+        color: var(--muted);
+        white-space: nowrap;
+      }
+
+      #current-tier[data-tier="mild"] { color: #fbbf24; }
+      #current-tier[data-tier="serious"] { color: #fb923c; }
+      #current-tier[data-tier="unhinged"] { color: var(--accent); }
+
+      .panel {
+        background: rgba(15, 23, 42, 0.82);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 18px;
+        box-shadow: 0 8px 30px rgba(15, 23, 42, 0.35);
+      }
+
+      .label {
+        display: inline-block;
+        margin-bottom: 10px;
+        font-size: 12px;
+        color: var(--muted);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .timer {
+        font-size: clamp(2rem, 5vw, 4rem);
+        margin: 0;
+        line-height: 1;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+      }
+
+      .meta-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        margin-top: 18px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .app-box {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        background: rgba(31, 41, 55, 0.7);
+        padding: 12px 14px;
+      }
+
+      .app-name {
+        font-weight: 600;
+      }
+
+      .threshold {
+        color: var(--accent);
+        font-weight: 700;
+      }
+
+      .controls {
+        margin-top: 18px;
+        display: flex;
+        gap: 10px;
+      }
+
+      button {
+        border: 0;
+        border-radius: 10px;
+        padding: 10px 14px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .settings-button,
+      .dialog-close {
+        background: rgba(148, 163, 184, 0.12);
+        color: var(--text);
+        border: 1px solid var(--border);
+      }
+
+      .time-over {
+        margin: 0;
+        color: var(--accent);
+        font-size: 2rem;
+        line-height: 1;
+      }
+
+      .tracker-message {
+        margin: 14px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      dialog {
+        width: min(420px, calc(100vw - 32px));
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 22px;
+        background: var(--panel-strong);
+        color: var(--text);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      }
+
+      dialog::backdrop {
+        background: rgba(0, 0, 0, 0.65);
+      }
+
+      .dialog-heading {
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 20px;
+      }
+
+      .dialog-heading h2 {
+        margin: 0;
+        font-size: 20px;
+      }
+
+      .dialog-heading p {
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .settings-field {
+        display: grid;
+        gap: 8px;
+        font-size: 14px;
+      }
+
+      .settings-field input {
+        width: 100%;
+        min-height: 42px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 8px 10px;
+        background: var(--bg);
+        color: var(--text);
+        font: inherit;
+      }
+
+      #save-settings {
+        background: var(--accent);
+        color: white;
+      }
+
+      .settings-error {
+        min-height: 1.2em;
+        margin: 10px 0 0;
+        color: var(--accent);
+        font-size: 13px;
+      }
+
+      @media (max-width: 640px) {
+        .app-shell { margin: 12px auto; padding: 16px; }
+        .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .grid { grid-template-columns: 1fr; }
+        .topbar { align-items: flex-start; }
+        .topbar-actions { align-items: flex-end; flex-direction: column-reverse; }
+        .status-pill { white-space: nowrap; }
+      }
+
+    </style>
+  </head>
+  <body>
+    <main class="app-shell">
+      <div class="topbar">
+        <div class="brand">
+          <span class="brand-mark">☠️</span>
+          <span>grimreaperX</span>
+        </div>
+        <div class="topbar-actions">
+          <div id="tracker-status" class="status-pill" data-state="active" aria-live="polite">Connecting</div>
+          <button id="settings-button" class="settings-button" type="button">Settings</button>
+        </div>
+      </div>
+
+      <section class="summary-grid" aria-label="Today's dashboard">
+        <article class="summary-card">
+          <span class="label">Today total</span>
+          <strong id="today-total" class="summary-value">0m</strong>
+        </article>
+        <article class="summary-card">
+          <span class="label">Top apps</span>
+          <ol id="top-apps" class="top-apps"><li>No sessions yet</li></ol>
+        </article>
+        <article class="summary-card">
+          <span class="label">Threats today</span>
+          <strong id="threat-count" class="summary-value">0</strong>
+        </article>
+        <article class="summary-card">
+          <span class="label">Current tier</span>
+          <strong id="current-tier" class="summary-value" data-tier="normal">Normal</strong>
+        </article>
+      </section>
+
+      <div class="grid">
+        <section class="panel">
+          <span class="label">Current session</span>
+          <h2 id="timer" class="timer">00:00</h2>
+
+          <div class="meta-row">
+            <span>Threshold</span>
+            <span id="threshold" class="threshold">20 min</span>
+          </div>
+
+          <div class="meta-row">
+            <span>Current app</span>
+            <span id="active-app">No tracked app</span>
+          </div>
+        </section>
+
+        <aside class="panel">
+          <span class="label">Time over threshold</span>
+          <h2 id="time-over" class="time-over">00:00</h2>
+          <p id="tracker-message" class="tracker-message" aria-live="polite">Waiting for tracker status.</p>
+        </aside>
+      </div>
+    </main>
+
+    <dialog id="settings-dialog" aria-labelledby="settings-title">
+      <form id="settings-form">
+        <div class="dialog-heading">
+          <div>
+            <h2 id="settings-title">Tracking settings</h2>
+            <p>Choose the continuous-use threshold.</p>
+          </div>
+          <button id="close-settings" class="dialog-close" type="button">Close</button>
+        </div>
+        <label class="settings-field" for="threshold-input">
+          Threshold in minutes
+          <input id="threshold-input" name="threshold" type="number" min="1" max="1440" step="1" value="20" required />
+        </label>
+        <p id="settings-error" class="settings-error" role="status"></p>
+        <div class="controls">
+          <button id="save-settings" type="submit">Save settings</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

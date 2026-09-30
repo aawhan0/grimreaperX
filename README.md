@@ -852,6 +852,8 @@ Run
 
 The Android client requires the appropriate platform permissions for usage monitoring and notifications.
 
+Usage Access is requested through Android system settings after the user taps the permission action. Once granted, the foreground service samples app transitions every five seconds, uses the shared escalation boundaries and `shared/threat_templates.json`, and stores normalized records in the app-private `files/usage_events.jsonl`. The JSON fields follow `shared/event.schema.json`; events remain on-device in this implementation. The monitor uses the `specialUse` foreground-service type because it is user-enabled continuous usage monitoring, not data synchronization. Google Play distribution requires a matching use-case declaration and policy review; the app does not use full-screen intents.
+
 ---
 
 # 🚀 CI/CD

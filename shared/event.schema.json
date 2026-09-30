@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GrimReaperX UsageEvent",
+  "type": "object",
+  "required": ["id", "device_id", "app_name", "category", "start_ts", "end_ts"],
+  "properties": {
+    "id": {"type": "string"},
+    "device_id": {"type": "string"},
+    "app_name": {"type": "string", "minLength": 1},
+    "category": {"type": "string"},
+    "start_ts": {"type": "string", "format": "date-time"},
+    "end_ts": {"type": "string", "format": "date-time"}
+  }
+}

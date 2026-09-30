@@ -1,0 +1,20 @@
+{
+  "mild": [
+    "☠️ {app}: the 20-minute warning has entered the chat.",
+    "☠️ {app}: your future self has filed a complaint.",
+    "☠️ {app}: this was supposed to be a quick visit.",
+    "☠️ {app}: productivity has left the building."
+  ],
+  "serious": [
+    "☠️ {app}: you have crossed the line. Consider touching grass.",
+    "☠️ {app}: the side quest has become the main quest.",
+    "☠️ {app}: your clock is no longer your friend.",
+    "☠️ {app}: another five minutes will absolutely become another hour."
+  ],
+  "unhinged": [
+    "☠️ {app}: legendary procrastination detected. Close it and reclaim the timeline.",
+    "☠️ {app}: you have unlocked the secret achievement: completely lost track of time.",
+    "☠️ {app}: the Grim Reaper has audited your calendar and found suspicious activity.",
+    "☠️ {app}: final boss energy detected. Exit voluntarily."
+  ]
+}

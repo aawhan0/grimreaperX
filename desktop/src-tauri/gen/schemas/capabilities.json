@@ -1,0 +1,1 @@
+{"default":{"identifier":"default","description":"Default permissions for grimreaperX","local":true,"windows":["*"],"permissions":["core:default","notification:default"]}}
